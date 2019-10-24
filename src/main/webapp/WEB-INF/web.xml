@@ -1,0 +1,90 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:spring-mybatis.xml</param-value>
+  </context-param>
+
+  <filter>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>/</url-pattern>
+  </filter-mapping>
+
+
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+
+
+
+  <!-- 配置springmvc中的前端控制器 -->
+  <servlet>
+    <servlet-name>springmvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!--初始化参数  -->
+    <!--创建一个新的DispatcherServlet，它将根据通过servlet * init-params提供的默认值和值创建自己的内部web *应用程序上下文。通常用于Servlet 2.5或更早版本的环境中，其中Servlet注册的唯一*选项是通过需要使用无参数构造函数的代码web.xml来实现的。  -->
+    <!--
+     1.ContextConfigLocation的配置是针对于我们找到springmvc加载的配置文件用的，为什么我们需要加载springmvc的配置文件
+          因为我们需要配置springmvc的处理器映射器，适配器内容
+     2.其实也可以不配置，但是如果不配置程序运行的时候回去找WEB-INF/servlet名称-serlvet.xml。但是如果我们项目有多个模块的时候这个时候我们就需要配置了
+        -->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <!--classpath表示从class文件下找springmvc.xml配置文件，如果是classpath*表示不仅会在class路径找还会在jar中去找  -->
+      <param-value>
+        classpath:springmvc.xml,
+        classpath:spring-redis.xml
+      </param-value>
+    </init-param>
+
+  </servlet>
+
+
+
+
+
+  <!--处理器映射配置  -->
+  <servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <!--
+       映射的写法总共有3种
+       1. *.action。表示访问以.action结尾，由DispatcherServlet进行解析
+       2. /，所有访问都是有DispatcherServlet进行解析，对于静态文件我们不让他解析
+       3. /* 这种写法是不对的  -->
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.css</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.js</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.png</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.jpg</url-pattern>
+  </servlet-mapping>
+
+</web-app>
